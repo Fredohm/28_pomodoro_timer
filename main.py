@@ -11,7 +11,9 @@ FONT_NAME = "Courier"
 
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 25
+LONG_BREAK_MIN = 20
+
+reps = 0
 
 
 # TIMER RESET
@@ -21,7 +23,20 @@ def reset_timer():
 
 # TIMER MECHANISM
 def start_timer():
-    count_down(5 * 60)
+    global reps
+    reps += 1
+    if reps % 8 == 0:
+        timer_label.config(text="Break")
+        count_down(LONG_BREAK_MIN * 60)
+    elif reps % 2 != 0:
+        timer_label.config(text="Work")
+        count_down(WORK_MIN * 60)
+    else:
+        timer_label.config(text="Break")
+        count_down(SHORT_BREAK_MIN * 60)
+
+    if reps > 8:
+        reps = 1
 
 
 # COUNTDOWN MECHANISM
