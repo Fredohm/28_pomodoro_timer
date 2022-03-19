@@ -3,10 +3,10 @@ from tkinter import *
 from math import floor
 
 # CONSTANTS
-PINK = "#e2979c"
-RED = "e7305b"
-GREEN = "#9bde9c"
-YELLOW = "#f7f5dd"
+PINK = "#F94892"
+RED = "#E7305b"
+GREEN = "#9BDE9c"
+YELLOW = "#F7F5DD"
 FONT_NAME = "Courier"
 
 WORK_MIN = 25
@@ -26,13 +26,13 @@ def start_timer():
     global reps
     reps += 1
     if reps % 8 == 0:
-        timer_label.config(text="Break")
+        timer_label.config(text="Break", fg=RED)
         count_down(LONG_BREAK_MIN * 60)
     elif reps % 2 != 0:
-        timer_label.config(text="Work")
+        timer_label.config(text="Work", fg=GREEN)
         count_down(WORK_MIN * 60)
     else:
-        timer_label.config(text="Break")
+        timer_label.config(text="Break", fg=PINK)
         count_down(SHORT_BREAK_MIN * 60)
 
     if reps > 8:
