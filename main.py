@@ -13,17 +13,27 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 
+# Global variables
 reps = 0
+checks = ""
+timer = None
 
 
 # TIMER RESET
 def reset_timer():
-    pass
+    global reps
+    global timer
+    window.after_cancel(str(timer))
+    timer_label.config(text="Timer")
+    canvas.itemconfig(timer_text, text="00:00")
+    check_marks.config(text="")
+    reps = 0
 
 
 # TIMER MECHANISM
 def start_timer():
     global reps
+    global checks
     reps += 1
     if reps % 8 == 0:
         timer_label.config(text="Break", fg=RED)
@@ -37,10 +47,13 @@ def start_timer():
 
     if reps > 8:
         reps = 1
+        checks = ""
 
 
 # COUNTDOWN MECHANISM
 def count_down(count):
+    global reps
+    global checks
     count_min = floor(count / 60)
     count_sec = (count % 60)
     # use of dynamic typing
@@ -51,9 +64,13 @@ def count_down(count):
 
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
-        window.after(1, count_down, count - 1)
+        global timer
+        timer = window.after(1000, count_down, count - 1)
     else:
         start_timer()
+        if reps % 2 == 0:
+            checks += "✓"
+            check_marks.config(text=checks)
 
 
 # UI SETUP
@@ -73,7 +90,7 @@ start_button = Button(text="Start", bg=YELLOW, fg=GREEN, font=(FONT_NAME, 10, "b
 reset_button = Button(text="Reset", bg=YELLOW, fg=GREEN, font=(FONT_NAME, 10, "bold"), highlightthickness=0,
                       command=reset_timer)
 
-check_marks = Label(text="✓", bg=YELLOW, fg=GREEN, highlightthickness=0)
+check_marks = Label(bg=YELLOW, fg=GREEN, highlightthickness=0)
 
 timer_label.grid(column=1, row=0)
 canvas.grid(column=1, row=1)
